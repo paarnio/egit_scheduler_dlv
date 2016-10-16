@@ -1,0 +1,124 @@
+course(elec_e8118_l).
+course(elec_e8119_l).
+course(elec_l8120_l).
+course(elec_l8121_l).
+course(elec_e8101_l). exer(elec_e8101_h01). exer(elec_e8101_h02).
+course(elec_e8102_l). exer(elec_e8102_h01).
+% --- course teachers ----
+teacher(kai).
+teacher(val).
+teacher(qua).
+teacher(art).
+teacher(val).
+teacher(art).
+teacher(jor).
+teacher(ilk).
+teacher(sep).
+teacher(qua).
+teacher(kai).
+teacher(rob).
+teacher(vil).
+teacher(vil).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% --- courses and exercises are supervised by teachers ----
+evsuper(elec_e8101_l, kai).
+evsuper(elec_e8102_l, val).
+evsuper(elec_e8103_l, qua).
+evsuper(elec_e8104_l, art).
+evsuper(elec_e8110_l, val).
+evsuper(elec_e8111_l, art).
+evsuper(elec_e8112_l, jor).
+evsuper(elec_e8113_l, ilk).
+evsuper(elec_e8114_l, sep).
+evsuper(elec_e8115_l, qua).
+evsuper(elec_e8116_l, kai).
+evsuper(elec_e8117_l, rob).
+evsuper(elec_e8118_l, vil).
+evsuper(elec_e8119_l, vil).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+major(aee).
+major(aee2).
+
+
+
+% --- cource may be oblicatory or selective in some major
+maobl(elec_e8101_l, aee).
+maobl(elec_e8102_l, aee).
+maobl(elec_e8103_l, aee).
+maobl(elec_e8104_l, aee).
+maobl(elec_e8110_l, aee).
+masel(elec_e8111_l, aee).
+masel(elec_e8112_l, aee).
+masel(elec_e8113_l, aee).
+masel(elec_e8114_l, aee).
+masel(elec_e8115_l, aee).
+maobl(elec_e8116_l, aee2).
+maobl(elec_e8117_l, aee2).
+maobl(elec_e8118_l, aee2).
+masel(elec_e8119_l, aee2).
+masel(elec_l8120_l, aee2).
+masel(elec_l8121_l, aee2).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

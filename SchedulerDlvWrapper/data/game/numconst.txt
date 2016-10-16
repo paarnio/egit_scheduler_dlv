@@ -1,0 +1,16 @@
+% From:manual
+% >dldb_win32.exe -N=50 -silent numconst.txt
+% const-line syntax error
+
+#maxint=19.
+bignumber(#maxint).
+
+#const rate = 5.
+due(2). due(10).
+pay(X) :- due(Y), X=Y*rate.
+
+time(T) :- #int(T), T<11 .
+limit(5) .
+limited(T) :- time(T), limit(L), T<L .
+
+lime(1..4) .

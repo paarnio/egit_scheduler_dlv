@@ -1,0 +1,49 @@
+%10
+%
+% --- Courses a ---
+course(a1).
+course(a2).
+course(a3).
+course(a4).
+course(a5).
+% --- Exercises ---
+exer(aex1).
+exer(aex2).
+exer(aex3).
+exer(aex4).
+exer(aex5).
+% --- course can have exercises crsex(C,E) ---
+crsex(a1,aex1).
+crsex(a2,aex2).
+crsex(a3,aex3).
+crsex(a4,aex4).
+crsex(a5,aex5).
+% --- Courses b---
+course(b1).
+course(b2).
+course(b3).
+course(b4).
+course(b5).
+course(b6).
+course(b7).
+course(b8).
+course(b9).
+course(b10).
+% -------------------------
+% --- courses and exercises are supervised by teachers ----
+teacher(tea1). teacher(tea2). teacher(tea3). teacher(tea4). 
+evsuper(a1,tea1). evsuper(b1,tea1).
+evsuper(a2,tea2). evsuper(b2,tea2).
+evsuper(a3,tea3). evsuper(b3,tea3).
+evsuper(a4,tea4). evsuper(b4,tea4).
+% --- Major's ----------
+major(maj1). major(maj2).
+major(maj3). major(maj4).
+% --- cource may be oblicatory in some major: maobl(C,M)
+maobl(a1,maj1). maobl(b1,maj1).
+maobl(a2,maj2). maobl(b2,maj2).
+maobl(a3,maj3). maobl(b3,maj3).
+maobl(a4,maj4). maobl(b4,maj4).
+% --- cource may be selective in some major: masel(C,M)
+masel(a1,maj1). masel(b1,maj1).
+maobl(a2,maj2). maobl(b2,maj2).

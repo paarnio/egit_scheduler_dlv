@@ -1,0 +1,83 @@
+% Course_scheduler_beta
+% Lukujärjestyksen suunnitteluohjelma
+% 2015-02-02 VPA: TOIMII (Tulokset Testattu excel analyysillä: result_analysis.xlsx)
+% Based on my earlier Course_scheduler5 
+% NOPEUTTAA LASKENTAA(ELI TOIMII) KUN KÄYTTÄÄ COSTBOUNDS: ESIM: command line -costbound=6,6,_ 
+% SEE: http://www.dlvsystem.com/html/DLV_User_Manual.html#AEN474
+% (note: costlevels should be at least 2x overlapping course pairs.
+% however, it seems that the bound is exceeded in results??)
+% ===========================================================================
+% --- USING COST OPTIMIZATION ---
+% http://www.dlvsystem.com/html/DLV_User_Manual.html
+% --- USING COSTBOUNDS ----------
+% --- Structure -----
+% 1. cource and exer are event's that are allocated to some schedule slots: inslot(E,S)
+% 2. course can have exercises: crsex(C,E)
+% 3. cource may be oblicatory in some major: maobl(C,M)
+% 4. cource may be selective in some major: masel(C,M)
+% 5. events have teachers as supervisors: evsuper(E,T)
+% ------------------------------------
+% ----NOTE: MUST USE: COMMAND WITH COSTBOUNDS ------
+% 2>dlv.mingw.exe -silent -filter=inslot -costbound=40,8,_ -n=1 ./work/Course_scheduler_beta1
+% ====================================================
+% --- Week calender with time slots -----
+day(mon). day(tue). day(wed). day(thu). day(fri).
+dayslot(mon,1). dayslot(mon,2). dayslot(mon,3). dayslot(mon,4).
+dayslot(tue,5). dayslot(tue,6). dayslot(tue,7). dayslot(tue,8).
+dayslot(wed,9). dayslot(wed,10). dayslot(wed,11). dayslot(wed,12).
+dayslot(thu,13). dayslot(thu,14). dayslot(thu,15). dayslot(thu,16).
+dayslot(fri,17). dayslot(fri,18). dayslot(fri,19). dayslot(fri,20).
+slot(S) :- dayslot(D,S), day(D).
+
+%---new morning slots ----
+morning(1). morning(5). morning(9). morning(13). morning(17).
+%---new weekend slots ----
+weekend(19). weekend(20).
+
+
+
+% --- cource's and exer's are event's ---
+event(E) :- course(E).
+event(E) :- exer(E).
+
+
+% --- cource and exer are event's that are allocated to some schedule slot ---
+inslot(C,1) v inslot(C,2) v inslot(C,3) v inslot(C,4) v inslot(C,5) v inslot(C,6) v inslot(C,7) v inslot(C,8) v inslot(C,9) v  inslot(C,10) v inslot(C,11) v inslot(C,12) v inslot(C,13) v inslot(C,14) v inslot(C,15) v inslot(C,16) v inslot(C,17) v inslot(C,18) v inslot(C,19) v inslot(C,20) :- event(C) .
+
+% --- STRONG CONSTRAINTS  ----- 
+% One course must have only one time slot
+
+ :- inslot(C,S1), inslot(C,S2), S1 != S2.
+
+% --- weak constraints with WEIGHTS and PRIORITIES -----
+% --- LOW priority 1 ----------------
+% -- no overlapping courses 
+ :~ inslot(C1,S), inslot(C2,S), C1 != C2. [1:1]
+% -- no overlapping between oblicatory and selective courses of the same major
+ :~ inslot(C1,S), inslot(C2,S), C1 != C2, maobl(C1,M), masel(C2,M), major(M). [2:1] 
+% --- HIGH priority 2 ---------------
+% -- no overlapping oblicatory courses of the same major
+ :~ inslot(C1,S), inslot(C2,S), C1 != C2, maobl(C1,M), maobl(C2,M), major(M). [1:2]
+% -- no overlapping events supervised by the same teacher
+ :~ inslot(C1,S), inslot(C2,S), C1 != C2, evsuper(C1,T), evsuper(C2,T), teacher(T). [1:2]
+% -- no overlapping between courses and course exercises
+ :~ inslot(C1,S), inslot(E2,S), C1 != E2, crsex(C1,E2). [1:2]
+
+ % -- NEW ----
+% -- no lectures in the morning 
+ :~ inslot(C,S), course(C), slot(S), morning(S). [1:1]
+ % -- no lectures on Friday evening 
+ :~ inslot(C,S), course(C), slot(S), weekend(S). [2:1]
+
+% -- trying to distribute lectures to all days
+somelec(D) :- inslot(C1,S1), course(C1), dayslot(D,S1) .
+indaydouble(D) :- inslot(C1,S1), course(C1), inslot(C2,S2), course(C2), dayslot(D,S1), dayslot(D,S2), C1!=C2 .
+
+ :~ not somelec(mon). [2:1]
+ :~ not somelec(tue). [2:1]
+ :~ not somelec(wed). [1:1]
+ :~ not somelec(thu). [1:1]
+ :~ not somelec(fri). [1:1]
+	
+ 
+% :~ not indaydouble(D), day(D). [2:2]

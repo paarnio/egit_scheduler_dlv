@@ -1,0 +1,84 @@
+% Course_scheduler_beta
+% Lukujärjestyksen suunnitteluohjelma
+% 2015-02-02 VPA: TOIMII (Tulokset Testattu excel analyysillä: result_analysis.xlsx)
+% Based on my earlier Course_scheduler5 
+% NOPEUTTAA LASKENTAA(ELI TOIMII) KUN KÄYTTÄÄ COSTBOUNDS: ESIM: command line -costbound=6,6,_ 
+% SEE: http://www.dlvsystem.com/html/DLV_User_Manual.html#AEN474
+% (note: costlevels should be at least 2x overlapping course pairs.
+% however, it seems that the bound is exceeded in results??)
+% ===========================================================================
+% --- USING COST OPTIMIZATION ---
+% http://www.dlvsystem.com/html/DLV_User_Manual.html
+% --- USING COSTBOUNDS ----------
+% --- Structure -----
+% 1. cource and exer are event's that are allocated to some schedule slots: inslot(E,S)
+% 2. course can have exercises: crsex(C,E)
+% 3. cource may be oblicatory in some major: maobl(C,M)
+% 4. cource may be selective in some major: masel(C,M)
+% 5. events have teachers as supervisors: evsuper(E,T)
+% ------------------------------------
+% ----NOTE: MUST USE: COMMAND WITH COSTBOUNDS ------
+% 2>dlv.mingw.exe -silent -filter=inslot -costbound=40,8,_ -n=1 ./work/Course_scheduler_beta1
+% ====================================================
+
+% --- Week calender with time slots -----
+day(mon). day(tue). day(wed). day(thu). day(fri).
+dayslot(mon,1). dayslot(mon,2). dayslot(mon,3). dayslot(mon,4).
+dayslot(tue,5). dayslot(tue,6). dayslot(tue,7). dayslot(tue,8).
+dayslot(wed,9). dayslot(wed,10). dayslot(wed,11). dayslot(wed,12).
+dayslot(thu,13). dayslot(thu,14). dayslot(thu,15). dayslot(thu,16).
+dayslot(fri,17). dayslot(fri,18). dayslot(fri,19). dayslot(fri,20).
+slot(S) :- dayslot(D,S), day(D).
+
+% --- Courses ---
+% adding more courses than slots
+course(a). course(b). course(c). course(d).
+course(e). course(f). course(g). course(h).
+course(i). course(j). course(k). course(l).
+course(m). course(n). course(o). course(p).
+course(q). course(r). course(s). course(t).
+% more than slots
+course(u). course(v). course(x). course(y).
+course(a2). course(b2). course(c2). course(d2).
+course(e2). course(f2). course(g2). course(h2).
+% --- Exercises ---
+exer(aex). exer(bex). exer(cex). exer(dex).
+% --- course can have exercises crsex(C,E) ---
+crsex(a,aex). crsex(b,bex). crsex(c,cex). crsex(d,dex). 
+% --- cource's and exer's are event's ---
+event(E) :- course(E).
+event(E) :- exer(E).
+% --- Major's ----------
+major(maj1). major(maj2).
+major(maj3). major(maj4).
+% --- cource may be oblicatory in some major: maobl(C,M)
+maobl(a,maj1). maobl(b,maj1).
+maobl(c,maj2). maobl(d,maj2).
+maobl(e,maj3). maobl(f,maj3).
+maobl(g,maj4). maobl(h,maj4).
+% --- cource may be selective in some major: masel(C,M)
+masel(a2,maj1). masel(b2,maj1).
+maobl(c2,maj2). maobl(d2,maj2).
+% --- courses and exercises are supervised by teachers ----
+teacher(tea1). teacher(tea2). teacher(tea3). teacher(tea4). 
+evsuper(a,tea1). evsuper(e,tea1).
+evsuper(d,tea2). evsuper(h,tea2).
+evsuper(i,tea3). evsuper(j,tea3).
+evsuper(k,tea4). evsuper(l,tea4).
+
+% --- cource and exer are event's that are allocated to some schedule slot ---
+inslot(C,1) v inslot(C,2) v inslot(C,3) v inslot(C,4) v inslot(C,5) v inslot(C,6) v inslot(C,7) v inslot(C,8) v inslot(C,9) v  inslot(C,10) v inslot(C,11) v inslot(C,12) v inslot(C,13) v inslot(C,14) v inslot(C,15) v inslot(C,16) v inslot(C,17) v inslot(C,18) v inslot(C,19) v inslot(C,20) :- event(C) .
+
+% --- weak constraints with WEIGHTS and PRIORITIES -----
+% --- LOW priority 1 ----------------
+% -- no overlapping courses 
+ :~ inslot(C1,S), inslot(C2,S), C1 != C2. [1:1]
+% -- no overlapping between oblicatory and selective courses of the same major
+ :~ inslot(C1,S), inslot(C2,S), C1 != C2, maobl(C1,M), masel(C2,M), major(M). [2:1] 
+% --- HIGH priority 2 ---------------
+% -- no overlapping oblicatory courses of the same major
+ :~ inslot(C1,S), inslot(C2,S), C1 != C2, maobl(C1,M), maobl(C2,M), major(M). [1:2]
+% -- no overlapping events supervised by the same teacher
+ :~ inslot(C1,S), inslot(C2,S), C1 != C2, evsuper(C1,T), evsuper(C2,T), teacher(T). [1:2]
+% -- no overlapping between courses and course exercises
+ :~ inslot(C1,S), inslot(E2,S), C1 != E2, crsex(C1,E2). [1:2]

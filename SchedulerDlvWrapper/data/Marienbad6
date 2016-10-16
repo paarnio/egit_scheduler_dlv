@@ -1,0 +1,163 @@
+% Marienbad tikkupeli
+%    I
+%   III
+%  IIIII
+% IIIIIII
+%--------------------
+% C:\SpecialPrograms\dlv_db>dldb_win32.exe -v -n=2 -filter=takeA,takeM,onRow Marienbad5
+% MAX TIME=11
+% M Noudattaa sääntöjä JA VOITTAA. TOIMII!!!!!
+% -------------------
+% MANUAL: http://www.dlvsystem.com/html/DLV_User_Manual.html
+% Alkumalli Ks. tikut_vpa
+% PO. #maxint=11 . määritelty laskutoimituksia varte.
+% PO. S1=S3+S2 (ei S3=S1-S2)
+% Viime vuonna Marienbadissa tikkupelin voittosäännöt (itse keksitty):
+% Pelin häviää se joka ottaa viimeisen tikun pöydältä.
+% M on voittava mestaripelaaja, joka noudattaa seuraavia sääntöjä.
+% Y=yleissääntö, ei riittävä
+% R1-R4 = varsinaiset säännöt
+% ------------ 
+% Y1: M:n jokaisen siirron jälkeen kaikkien tikkujen määrän tulee olla parillinen
+% lukuunottamatta M:n viimeistä siirtoa, jolloin pöydälle tulee jäädä vain yksi tikku.
+% ------------
+% R1: jos M:n siirron jälkeen pöydälle jää 4 riviä:
+% =>  p.o että jokaisella rivillä on pariton määrä tikkuja.
+% ------------
+% R2: jos M:n siirron jälkeen pöydälle jää 3 riviä:
+% =>  p.o että vain ja ainoastaan yhdellä (1) rivillä on parillinen määrä tikkuja.
+% ------------
+% R3: jos M:n siirron jälkeen pöydälle jää 2 riviä:
+% =>  p.o että molemmilla riveillä on yhtä monta tikkua ja vähintään kaksi (2).
+% ------------
+% R4: jos M:n siirron jälkeen pöydälle jää 1 riviä:
+% =>  p.o että rivillä on vain yksi (1) tikku.
+% ===================================
+
+% Laskutoimitukset vaativat #maxint määrittelyä (*voi myös command line optiolla -N=4)
+#maxint=11 .
+
+% EI TOIMI? #const mxtime=5 .
+
+
+stick(S) :- #int(S), S>=0, S<8 .
+row(R) :- #int(R), R>0, R<5 .
+% ***HUOM TIME yläraja on (9)11
+time(T) :- #int(T), T>=1, T<=11 .
+even(10) .
+even(M2) :- #int(M1), #int(M2), odd(M1), M1=M2+1 . 
+odd(M2) :- #int(M1), #int(M2), even(M1), M1=M2+1 . 
+
+% ----- Start situation ---------
+% onRow(T,R,S) T: time, R: row, S: stick
+onRow(1,1,1).
+onRow(1,2,3).
+onRow(1,3,5).
+onRow(1,4,7).
+
+% --- take(T,R,S) where T: time, R: row, S: stick
+% --- takeA is action (at oddtimes) of player A who ought to be won by the player M
+% ***HUOM TIME yläraja on (9)11
+takeA(1,4,1).
+takeA(3,4,1).
+takeA(5,4,1).
+takeA(7,4,1).
+takeA(9,4,1).
+
+take(T,R,S) :- takeA(T,R,S) .
+takeRow(T,R) :- takeA(T,R,S) .
+takeSticks(T,S) :- takeA(T,R,S) .
+
+% --- takeM is an action (at eventimes)  of master player M who plays using winning rules.
+take(T,R,S) :- takeM(T,R,S) .
+
+% ----- GOAL -------------------
+% Do not set goals
+%onRow(9,1,0) .
+%onRow(9,2,0) .
+%onRow(9,3,0) .
+%onRow(9,4,1) .
+
+% ------ Basic definitions -----
+
+evenRow(T,R) :- onRow(T,R,S), time(T), row(R), stick(S), even(S) .
+oddRow(T,R) :- onRow(T,R,S), time(T), row(R), stick(S), odd(S) .
+%oddRow(T,R) :- not evenRow(T,R), time(T), row(R) .
+
+% ------ actions ---------------
+% Otetaan S2 tikkua riviltä R: take(T1,R,S2) :TOIMII KUN PANEE:  S1=S3+S2
+onRow(T2,R,S3) :- onRow(T1,R,S1), take(T1,R,S2), row(R), stick(S1), stick(S2), stick(S3), time(T1), time(T2), S1=S3+S2, T2=T1+1 .
+% --- If no sticks taken from the row, number of sticks is not changed
+onRow(T2,R,S1) :- onRow(T1,R,S1), not takeRow(T1,R), row(R), stick(S1), time(T1), time(T2), T2=T1+1 .
+
+% --- constraints ----- HUOM toimivat disjunction rulen kanssa
+
+%--- taking only from one row at a time ---
+% ***HUOM TIME yläraja on (9)11
+takeRow(T,1) v takeRow(T,2) v takeRow(T,3) v takeRow(T,4) :- time(T), T<11 .
+ :- takeRow(T,R1), takeRow(T,R2), time(T), row(R1), row(R2), R1!=R2 .
+
+%--- taking only one set of sticks at a time ---
+% ***HUOM TIME yläraja on (9) 11
+takeSticks(T,1) v takeSticks(T,2) v takeSticks(T,3) v takeSticks(T,4) v takeSticks(T,5) v takeSticks(T,6) v takeSticks(T,7) :- time(T), T<11 .
+ :- takeSticks(T,S1), takeSticks(T,S2), time(T), stick(S1), stick(S2), S1!=S2 .
+ 
+% --- sticks cannot be taken more than there is at the row
+% :- takeRow(T,R), takeSticks(T,S2), onRow(T,R,S1), time(T), row(R), stick(S1), stick(S2), S2>S1 .
+ :- take(T,R,S2), onRow(T,R,S1), time(T), row(R), stick(S1), stick(S2), S2>S1 .
+ 
+%--- player M takes at even times
+takeM(T,R,S) :- takeRow(T,R), takeSticks(T,S), even(T) .
+%--- take only once at a time (at eventimes) 
+ :- take(T,R1,S1), take(T,R2,S2), time(T), row(R1), row(R2), stick(S1), stick(S2), S1!=S2 .
+ :- take(T,R1,S1), take(T,R2,S2), time(T), row(R1), row(R2), stick(S1), stick(S2), R1!=R2 .
+
+%--- onRow only one number of sticks at a time
+ :- onRow(T,R,S1), onRow(T,R,S2), S1!=S2 .
+
+
+% ================ WINNING RULES ===========================
+
+% NOT SAFE? rowsOnTable(T,N) :- #count{R : onRow(T,R,S), time(T), row(R), stick(S), S>0} = N .
+fourRows(T) :- time(T), #count{R : onRow(T,R,S), row(R), stick(S), S>0} = 4 .
+threeRows(T) :- time(T), #count{R : onRow(T,R,S), row(R), stick(S), S>0} = 3 .
+twoRows(T) :- time(T), #count{R : onRow(T,R,S), row(R), stick(S), S>0} = 2 .
+oneRows(T) :- time(T), #count{R : onRow(T,R,S), row(R), stick(S), S>0} = 1 .
+
+fourOddRows(T) :- time(T), #count{R : onRow(T,R,S), row(R), stick(S), odd(S), S>0} = 4 .
+oneEvenRows(T) :- time(T), #count{R : onRow(T,R,S), row(R), stick(S), even(S), S>0} = 1 .
+sameNrSticksOverOne(T) :- twoRows(T), onRow(T,R1,S), onRow(T,R2,S), time(T), stick(S), row(R1), row(R2), S>1, R1!=R2 .
+
+oneStickAtLastRow(T) :- oneRows(T), onRow(T,R,S), time(T), stick(S), row(R), S>0, S<2 .
+
+% ------------
+% R1: jos M:n siirron jälkeen pöydälle jää 4 riviä:
+% =>  p.o että jokaisella rivillä on pariton määrä tikkuja.
+% ------------
+
+ :- takeM(T1,R,S),fourRows(T2), not fourOddRows(T2), row(R), stick(S), time(T1), time(T2), T2=T1+1 .
+ 
+% ------------
+% R2: jos M:n siirron jälkeen pöydälle jää 3 riviä:
+% =>  p.o että vain ja ainoastaan yhdellä (1) rivillä on parillinen määrä tikkuja.
+% ------------
+
+ :- takeM(T1,R,S),threeRows(T2), not oneEvenRows(T2), row(R), stick(S), time(T1), time(T2), T2=T1+1 .
+ 
+% ------------
+% R3: jos M:n siirron jälkeen pöydälle jää 2 riviä:
+% =>  p.o että molemmilla riveillä on yhtä monta tikkua ja vähintään kaksi (2).
+% ------------
+
+ :- takeM(T1,R,S),twoRows(T2), not sameNrSticksOverOne(T2), row(R), stick(S), time(T1), time(T2), T2=T1+1 .
+ 
+% ------------
+% R4: jos M:n siirron jälkeen pöydälle jää 1 riviä:
+% =>  p.o että rivillä on vain yksi (1) tikku.
+% ------------
+
+ :- takeM(T1,R,S),oneRows(T2),not oneStickAtLastRow(T2), row(R), stick(S), time(T1), time(T2), T2=T1+1 .
+
+ % ============================
+
+ 

@@ -1,0 +1,42 @@
+% DATA for Course_scheduler_beta
+%2
+%3
+%4
+%5
+%6
+%7
+%8
+%9
+%10
+% --- Courses ---
+% adding more courses than slots
+course(a). course(b). course(c). course(d).
+course(e). course(f). course(g). course(h).
+course(i). course(j). course(k). course(l).
+course(m). course(n). course(o). course(p).
+course(q). course(r). course(s). course(t).
+% more than slots
+course(u). course(v). course(x). course(y).
+course(a2). course(b2). course(c2). course(d2).
+course(e2). course(f2). course(g2). course(h2).
+% --- Exercises ---
+exer(aex). exer(bex). exer(cex). exer(dex).
+% --- course can have exercises crsex(C,E) ---
+crsex(a,aex). crsex(b,bex). crsex(c,cex). crsex(d,dex). 
+% --- courses and exercises are supervised by teachers ----
+teacher(tea1). teacher(tea2). teacher(tea3). teacher(tea4). 
+evsuper(a,tea1). evsuper(e,tea1).
+evsuper(d,tea2). evsuper(h,tea2).
+evsuper(i,tea3). evsuper(j,tea3).
+evsuper(k,tea4). evsuper(l,tea4).
+% --- Major's ----------
+major(maj1). major(maj2).
+major(maj3). major(maj4).
+% --- cource may be oblicatory in some major: maobl(C,M)
+maobl(a,maj1). maobl(b,maj1).
+maobl(c,maj2). maobl(d,maj2).
+maobl(e,maj3). maobl(f,maj3).
+maobl(g,maj4). maobl(h,maj4).
+% --- cource may be selective in some major: masel(C,M)
+masel(a2,maj1). masel(b2,maj1).
+maobl(c2,maj2). maobl(d2,maj2).

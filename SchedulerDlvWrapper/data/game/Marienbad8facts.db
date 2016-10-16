@@ -1,0 +1,35 @@
+% Marienbad tikkupeli
+%    I
+%   III
+%  IIIII
+% IIIIIII
+%--------------------
+% Marienbad7const contains named constants defined by #const structure.
+% PROBLEM: can not change the const value ?? why ? how?
+% THAT IS WHY: using timelimit(L)
+
+% ---- TIME ----
+% Toimii: time(T) :- #int(T), T>=1, T<=mxtime .
+% Toimii:
+% time(1..11) .
+% Voidaan asettaa myös java koodissa: inputProgram.addText("time(1..8) .");
+
+% -- timelimit ---
+%timelimit(8) .
+
+% ----- Start situation ---------
+% onRow(T,R,S) T: time, R: row, S: stick
+onRow(1,1,1).
+onRow(1,2,3).
+onRow(1,3,5).
+onRow(1,4,7).
+
+% --- take(T,R,S) where T: time, R: row, S: stick
+% --- takeA is action (at oddtimes) of player A who ought to be won by the player M
+% ***HUOM TIME yläraja on mxtime (9)11
+%takeA(1,4,1).
+%takeA(3,4,1).
+%takeA(5,4,1).
+%takeA(7,4,1).
+%takeA(9,4,1).
+

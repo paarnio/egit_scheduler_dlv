@@ -1,0 +1,22 @@
+% K-planning examples from:http://www.dlvsystem.com/k-planning-system/
+% >dldb_win32.exe yale.plan -FP -N=3
+% TOIMII!!!!!!
+fluents: alive. loaded.
+
+actions: load. shoot.
+
+always: executable shoot if loaded.
+
+    executable load if not loaded.
+
+    caused -alive after shoot.
+
+    caused -loaded after shoot.
+
+    caused loaded after load.
+
+initially: total loaded.
+
+    alive. 
+
+goal: -alive? (1) 
