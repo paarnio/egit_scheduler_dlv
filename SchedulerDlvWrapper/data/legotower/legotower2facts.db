@@ -1,0 +1,62 @@
+% legotower2facts.db
+% ==============
+% legotower2.txt divided to two separate files: facts & rules
+% rules are in file legotower2rules.dlv
+% only facts are in file legotower2facts.db
+% 2017-04-22 version 2 (TOIMII!!!!) 
+% ----- MANUAL --
+% http://www.dlvsystem.com/html/DLV_User_Manual.html
+% -n=<n>        Compute at most <n> stable models (-n=0 and -n=all give all).
+% -N=<N>        Limit integers to [0,<N>].
+% ----- run in powershell ./dlv
+% C:\SpecialPrograms\dlv>./dlv.mingw.exe -silent -filter=mainbranch -filter=subbranch -N=10 -n=1 ./work/legotower2rules.dlv ./work/legotower2facts.db
+% C:\SpecialPrograms\dlv>./dlv.mingw.exe -silent -nofacts -N=10 -n=1 ./work/legotower2rules.txt ./work/legotower2facts.db
+% pakki #maxint = 2 .
+% pakki #int(X1) .
+% ============ Lego Tree ==============
+% Mainbranch legos 1-5
+% Subbranch legos 6-7
+%
+%	LEGOTREE	LEVEL
+% 	| 5 - 5 |	: 5
+%	| 4 | 6 |	: 4
+%	| 3 | 7 |	: 3
+%	| 2 |		: 2
+%	| 1 |		: 1
+% ------------
+%  In mainbranch: Level defined the order of construction. It can grow only upwards
+%  In subbranch: should be constructed separately also in level order and connected to the main branch when ready.
+
+% Legos
+% in main branch
+lego(leg1). lego(leg2). lego(leg3). lego(leg4). lego(leg5).
+% in sub branch
+lego(leg6). lego(leg7).
+
+% ----Interfaces----
+bottomi(bot1). bottomi(bot2). bottomi(bot3). bottomi(bot4). bottomi(bot5). 
+topi(top1). topi(top2). topi(top3). topi(top4). topi(top5).
+bottomi(bot6). bottomi(bot7).
+topi(top6). topi(top7).
+% lego 5 is a rectangle with 2xtop and 2xbottom interfaces
+topi(top5b). bottomi(bot5b).
+
+interface(I):- bottomi(I).
+interface(I2):- topi(I2).
+
+% ----Lego has interfaces
+hasint(leg1,bot1). hasint(leg1,top1). hasint(leg2,bot2). hasint(leg2,top2). hasint(leg3,bot3). hasint(leg3,top3). 
+hasint(leg4,bot4). hasint(leg4,top4). hasint(leg5,bot5). hasint(leg5,top5). 
+hasint(leg6,bot6). hasint(leg6,top6). hasint(leg7,bot7). hasint(leg7,top7).
+
+% lego 5 is a rectangle lego with 2xtop and 2xbottom interfaces 
+hasint(leg5,bot5b). hasint(leg5,top5b).
+
+% ---- Interface links ------
+%  between interfaces are directed from top to bottom
+%
+link(top1,bot2). link(top2,bot3). link(top3,bot4). link(top4,bot5).
+% lego6 is linked under the lego 5 in bot5b interface as a subbranch
+link(top6,bot5b). link(top7,bot6).
+
+% --- Connected Legos ------

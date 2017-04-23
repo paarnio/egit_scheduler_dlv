@@ -1,0 +1,72 @@
+% legotower2rules.dlv
+% ==============
+% legotower2.txt divided to two separate files: facts & rules
+% legotower2rules.dlv contains only the rules
+% facts are in file legotower2facts.db
+%
+% 2017-04-22 version 2 (TOIMII!!!!) 
+% ----- MANUAL --
+% http://www.dlvsystem.com/html/DLV_User_Manual.html
+% -n=<n>        Compute at most <n> stable models (-n=0 and -n=all give all).
+% -N=<N>        Limit integers to [0,<N>].
+% ----- run in powershell ./dlv
+% C:\SpecialPrograms\dlv>./dlv.mingw.exe -silent -filter=mainbranch -filter=subbranch -N=10 -n=1 ./work/legotower2rules.dlv ./work/legotower2facts.db
+% C:\SpecialPrograms\dlv>./dlv.mingw.exe -silent -nofacts -N=10 -n=1 ./work/legotower2rules.txt ./work/legotower2facts.db
+% pakki #maxint = 2 .
+% pakki #int(X1) .
+% ============ Lego Tree ==============
+% Mainbranch legos 1-5
+% Subbranch legos 6-7
+%
+%	LEGOTREE	LEVEL
+% 	| 5 - 5 |	: 5
+%	| 4 | 6 |	: 4
+%	| 3 | 7 |	: 3
+%	| 2 |		: 2
+%	| 1 |		: 1
+% ------------
+%  In mainbranch: Level defined the order of construction. It can grow only upwards
+%  In subbranch: should be constructed separately also in level order and connected to the main branch when ready.
+
+
+% ----Interfaces----
+% in legotower2facts.db
+% ----Lego has interfaces
+% in legotower2facts.db
+% ---- Interface linkions ------
+% in legotower2facts.db
+
+% --- Connected Legos ------
+%  Legos that have interfaces that have a link between are connected
+%  Note: connected is symmetric relation (link is directed relation)
+
+connected(L1,L2):- link(I1,I2),hasint(L1,I1), hasint(L2,I2),lego(L1),lego(L2),interface(I1),interface(I2).
+connected(L2,L1):- connected(L1,L2),lego(L1),lego(L2).
+%connected(leg1,leg2).
+
+%----- Mainbranch ----------
+% Mainbranch of a legotree. Starting from base lego leg1
+base(leg1).
+mainbranch(L) :- base(L), lego(L).
+mainbranch(L2) :- mainbranch(L1), lego(L1), lego(L2), link(I1,I2), hasint(L1,I1), hasint(L2,I2), topi(I1), bottomi(I2).
+
+%---- LEGO LEVEL ------
+% lego can be at one level only (ERISUURI ? mikä symboli)
+:- level(Lego,L1), level(Lego, L2), lego(Lego), L1!=L2.
+
+% Level of a lego L2: baselego at level 1
+
+level(Lego,1) :- base(Lego), lego(Lego).
+level(L2,Lev2) :- link(I1,I2), hasint(L1,I1), hasint(L2,I2), lego(L1), lego(L2), level(L1,Lev1), Lev2 = Lev1+1.
+
+% ----Subbranch legos------
+subbranch(L2) :- not mainbranch(L2), mainbranch(L1), connected(L1,L2), lego(L2), lego(L2).
+subbranch(L3) :- not mainbranch(L3), subbranch(L2), connected(L2,L3), lego(L2), lego(L3).
+
+% level of subbranch legos L1 under a mainbranch lego L2
+level(L1,Lev1) :- link(I1,I2), hasint(L1,I1), hasint(L2,I2), subbranch(L1), mainbranch(L2), lego(L1), lego(L2), level(L2,Lev2), Lev1 = Lev2-1, Lev1>0.
+% level of subbranch legos L1 under a subbranch lego L2
+level(L1,Lev1) :- link(I1,I2), hasint(L1,I1), hasint(L2,I2), subbranch(L1), subbranch(L2), lego(L1), lego(L2), level(L2,Lev2), Lev1 = Lev2-1, Lev1>0.
+
+
+
