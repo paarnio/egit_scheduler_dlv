@@ -40,6 +40,8 @@
 %  Legos that have interfaces that have a link between are connected
 %  Note: connected is symmetric relation (link is directed relation)
 
+#maxint = 15.
+
 connected(L1,L2):- link(I1,I2),hasint(L1,I1), hasint(L2,I2),lego(L1),lego(L2),interface(I1),interface(I2).
 connected(L2,L1):- connected(L1,L2),lego(L1),lego(L2).
 %connected(leg1,leg2).

@@ -55,9 +55,12 @@ public class SimpleTest {
 		/* I can add some file to the DLVInputProgram */
 		// File file1=new File("PATH_1");
 		// File file2=new File("PATH_2");
-		inputProgram.addFile("data/Marienbad7const"); //TOIMII mun omalla ohjelmalla
+		//inputProgram.addFile("data/Marienbad7const"); //TOIMII mun omalla ohjelmalla
 		//inputProgram.addFile("data/ancestor"); //TOIMII
 		//inputProgram.addFile("data/ancestor.db1");
+		
+		inputProgram.addFile("data/legotower/legotower2rules.dlv"); //TOIMII:kun lisäsin #maxint = 2 .
+		inputProgram.addFile("data/legotower/legotower2facts.db");
 
 		/*WITH YALE.PLAN: VPA: -FP option added for yale.plan K-language program 
 		 * See: C:\SpecialPrograms\dlv_db\toimii.txt
@@ -92,7 +95,7 @@ public class SimpleTest {
 		 * This method deletes each option that contains the string "-n=" and
 		 * adds a new option "-n='n'.
 		 */
-		invocation.setNumberOfModels(2); //10
+		invocation.setNumberOfModels(1); //10
 
 		/*
 		 * I create a new observer that receive a notification for the models
