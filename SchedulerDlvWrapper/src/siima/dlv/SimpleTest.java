@@ -70,9 +70,16 @@ public class SimpleTest {
 		/*
 		 * I create a new instance of DLVInvocation using the DLVWrapper class
 		 * specifying a path for DLV executable
+		 * 
+		 * NOTE: HP:llä ja WPC:llä del.exe:n polku on eri
+		 * 
+		 * HP: C:/SpecialPrograms/dlv/dlv.mingw.exe 
+		 * WPC:C:/Special_Programs/dlv/dlv.mingw.exe
+		 * 
 		 */
+		
 		DLVInvocation invocation = DLVWrapper.getInstance().createInvocation(
-				"C:/SpecialPrograms/dlv/dlv.mingw.exe");
+				"C:/Special_Programs/dlv/dlv.mingw.exe"); 
 				//"C:/SpecialPrograms/dlv_db/dldb_win32.exe"); //dlvdb:ssä ei toimi named constants #const
 
 		/* VPA ADDIN:  */
