@@ -46,7 +46,7 @@ public class AspDlvReasoner {
 	 * HUOM: WPC: "C:/Special_Programs/dlv/dlv.mingw.exe"
 	 */
 	
-	public static String dlv_solver_path = "C:/Special_Programs/dlv/dlv.mingw.exe";
+	public static String dlv_solver_path = "C:/SpecialPrograms/dlv/dlv.mingw.exe";
 	
 	
 	public StringBuffer parseAspModel(List<Model> models){
@@ -215,8 +215,8 @@ public class AspDlvReasoner {
 
 	public static void main(String[] args) { // throws DLVInvocationException, IOException {
 		
-		String rules_dlv_file = "data/legotower/legotower2rules.dlv";
-		String facts_db_file = "data/legotower/legotower2facts.db";
+		String rules_dlv_file = "data/legotower/legotower_rules_mod4.dlv";
+		String facts_db_file = "data/legotower/legotower_facts_mod4.db";
 		String filepath = "data/legotower/asp_testresults.txt";
 
 		AspDlvReasoner asp = new AspDlvReasoner();
