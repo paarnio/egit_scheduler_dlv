@@ -1,0 +1,72 @@
+% legotower_facts_mod4.db 
+% ==============
+% TOIMII
+% 2017-04-28 MODIFYING structure: each lego has interface types (not instances).
+% legotower program divided into two separate files: facts .dlv & rules .db
+% ----- MANUAL --
+% http://www.dlvsystem.com/html/DLV_User_Manual.html
+% -n=<n>        Compute at most <n> stable models (-n=0 and -n=all give all).
+% -N=<N>        Limit integers to [0,<N>].
+% ----- run in powershell ./dlv
+% ./dlv.mingw.exe -silent -nofacts -N=10 -n=1 ./work/legotower_rules_mod4.txt ./work/legotower_facts_mod4.db
+% pakki #maxint = 2 .
+% pakki #int(X1) .
+% ============ Lego Tree ==============
+% Mainbranch legos 1-8
+% 1. Subbranch legos 6-7
+% 2. Subbranch lego 9
+%
+%	LEGOTREE	LEVEL
+%   | 8 - 8 |		: 6
+%   | 9 | 5 - 5 |	: 5
+%		| 4 | 6 |	: 4
+%		| 3 | 7 |	: 3
+%		| 2 |		: 2
+%		| 1 |		: 1
+% 
+% -----------------------------------
+%  In mainbranch: Level defined the order of construction. It can grow only upwards
+%  In subbranch: should be constructed separately also in level order and 
+%  connected to the main branch when ready.
+%
+%			INTERFACE TYPE
+%			/			\
+%		bottomi			topi
+%		/	\			/	\
+%	botA	botC	topA	topC
+%
+%----------------------------------
+% --- Legos ------
+% in main branch
+lego(leg1). lego(leg2). lego(leg3). lego(leg4). lego(leg5).
+% in sub branch
+lego(leg6). lego(leg7).
+% new----
+lego(leg8). lego(leg9).
+
+%----Interfaces----
+%- NEW: legos can share the interface types (botA, botC, topA, topC)
+
+bottomi(botA). bottomi(botC).
+topi(topA). topi(topC).
+
+interface(I):- bottomi(I).
+interface(I2):- topi(I2).
+
+% ----Lego has interfaces
+hasint(leg1,botA). hasint(leg1,topA). hasint(leg2,botA). hasint(leg2,topA). hasint(leg3,botA). hasint(leg3,topA). 
+hasint(leg4,botA). hasint(leg4,topA). hasint(leg5,botA). hasint(leg5,topA). 
+hasint(leg6,botA). hasint(leg6,topA). hasint(leg7,botA). hasint(leg7,topA).
+hasint(leg8,botA). hasint(leg8,topA). hasint(leg9,botA). hasint(leg9,topA).
+% lego 5 and 8 is a rectangle lego with 2xtop and 2xbottom interfaces 
+hasint(leg5,botC). hasint(leg5,topC). hasint(leg8,botC). hasint(leg8,topC).
+
+% ---- Interface links ------
+%  between interfaces are directed from top to bottom
+%-NEW - Links defined in a new way. Requires Lego identification.
+% link(LEGO1,TOP_INT_TYPE, LEGO2,BOTTOM_INT_TYPE)
+link(leg1,topA,leg2,botA). link(leg2,topA,leg3,botA). link(leg3,topA,leg4,botA).
+link(leg4,topA,leg5,botA). link(leg6,topA,leg5,botC). link(leg7,topA,leg6,botA).
+link(leg5,topA,leg8,botC). link(leg9,topA,leg8,botA). 
+
+% --- END FACTS (RULES in .dlv file) ------
