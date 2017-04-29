@@ -1,7 +1,8 @@
 /* AspDlvReasoner.java
  * 2017-04-27 TOIMII
  * 
- * See egit_dlv project: SimpleTest.java
+ * See http://www.dlvsystem.com/html/DLV_User_Manual.html
+ * 
  * 
  */
 package siima.dlv;
@@ -63,14 +64,16 @@ public class AspDlvReasoner {
 			hasModel = true;
 			for(Model model : models){
 				h++;
-				buffer.append("MODEL:" + h + "\n");
+				buffer.append("<model num='" + h + "'>\n");
 				Predicate firstPred = model.firstPredicate(); 
 				i++;
 				//System.out.println("--firstPred:" + firstPred.toString());				
 				while (firstPred.hasMoreLiterals()) {
 					Literal literal = firstPred.nextLiteral();
 					j++;
-					buffer.append("<" + h + ":" + i + ":" + j + ">" + literal.toString() + "\n");
+					buffer.append("<" + h + ":" + i + ":" + j + ">");
+					buffer.append("<literal predicate='" + literal.getName() + "' atom='"
+							+ literal.getAtom() + "'>" + literal.toString() + "</literal>\n");
 					System.out.println(j + ": Literal*: " + literal.toString());
 				}
 				while (model.hasMorePredicates()) {
@@ -79,11 +82,14 @@ public class AspDlvReasoner {
 					while (predicate.hasMoreLiterals()) {
 						Literal literal = predicate.nextLiteral();
 						j++;
-						buffer.append("<" + h + ":" + i + ":" + j + ">" + literal.toString() + "\n");
+						buffer.append("<" + h + ":" + i + ":" + j + ">");
+						buffer.append("<literal predicate='" + literal.getName() + "' atom='"
+								+ literal.getAtom() + "'>" + literal.toString() + "</literal>\n");
 						System.out
 								.println(j + ": Literal**: " + literal.toString());
 					}
 				}
+				buffer.append("</model>\n");
 				
 			}
 			
@@ -97,7 +103,7 @@ public class AspDlvReasoner {
 	
 	
 	public List<Model> invokeDlvReasoning(String rules_dlv_file, String facts_db_file, int numOfModels ) throws DLVInvocationException,
-	IOException { //TOIMII: huom tiedostossa po. rivi #maxint = ?.
+	IOException { //TOIMII: huom tiedostossa po. rivi #maxint = ?. TAI asettaa se invocation.setMaxint(20);
 				boolean hasModel = false;
 
 				/* I create a new instance of DLVInputProgram */
@@ -113,11 +119,21 @@ public class AspDlvReasoner {
 
 				/* VPA ADDIN:  */
 				invocation.setInputProgram(inputProgram);
-				invocation.setNumberOfModels(numOfModels); //10
+				invocation.setNumberOfModels(numOfModels);
+				invocation.setMaxint(20);
+				// Filters TOIMII
+				List<String> filters=new ArrayList(); 
+				filters.add("subbranch"); 
+				filters.add("mainbranch");
+				//invocation.setFilter(filters, true);
+				// OPTIONS TOIMII
+				invocation.addOption("-nofacts"); // TOIMII
+				
 				// TESTING QUERY
 				//USING "hasint(leg1,B)" -> ERROR: Non-ground queries are only supported with brave and cautious reasoning.
-				//Atom atom = new NormalAtom(true,"lego(leg1)"); //HAS MODEL: false
-				//invocation.setQuery(new Query(new Conjunction(new Literal(true, atom))));
+				// NormalAtom(boolean trueNegated,String name);
+				Atom atom = new NormalAtom(false,"lego(leg1)"); //NormalAtom(true,"lego(leg1)") -> HAS MODEL: false
+				invocation.setQuery(new Query(new Conjunction(new Literal(true, atom))));
 				
 				/* MODE 1: TOIMII
 				 * I create a new observer that receive a notification for the models

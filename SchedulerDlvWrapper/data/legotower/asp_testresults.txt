@@ -1,83 +1,40 @@
-MODEL:1
-<1:1:1>connected(leg1, leg2)
-<1:1:2>connected(leg2, leg1)
-<1:1:3>connected(leg2, leg3)
-<1:1:4>connected(leg3, leg2)
-<1:1:5>connected(leg3, leg4)
-<1:1:6>connected(leg4, leg3)
-<1:1:7>connected(leg4, leg5)
-<1:1:8>connected(leg5, leg4)
-<1:1:9>connected(leg5, leg6)
-<1:1:10>connected(leg5, leg8)
-<1:1:11>connected(leg6, leg5)
-<1:1:12>connected(leg6, leg7)
-<1:1:13>connected(leg7, leg6)
-<1:1:14>connected(leg8, leg5)
-<1:1:15>connected(leg8, leg9)
-<1:1:16>connected(leg9, leg8)
-<1:2:17>mainbranch(leg1)
-<1:2:18>mainbranch(leg2)
-<1:2:19>mainbranch(leg3)
-<1:2:20>mainbranch(leg4)
-<1:2:21>mainbranch(leg5)
-<1:2:22>mainbranch(leg8)
-<1:3:23>hasint(leg1, botA)
-<1:3:24>hasint(leg1, topA)
-<1:3:25>hasint(leg2, botA)
-<1:3:26>hasint(leg2, topA)
-<1:3:27>hasint(leg3, botA)
-<1:3:28>hasint(leg3, topA)
-<1:3:29>hasint(leg4, botA)
-<1:3:30>hasint(leg4, topA)
-<1:3:31>hasint(leg5, botA)
-<1:3:32>hasint(leg5, botC)
-<1:3:33>hasint(leg5, topA)
-<1:3:34>hasint(leg5, topC)
-<1:3:35>hasint(leg6, botA)
-<1:3:36>hasint(leg6, topA)
-<1:3:37>hasint(leg7, botA)
-<1:3:38>hasint(leg7, topA)
-<1:3:39>hasint(leg8, botA)
-<1:3:40>hasint(leg8, botC)
-<1:3:41>hasint(leg8, topA)
-<1:3:42>hasint(leg8, topC)
-<1:3:43>hasint(leg9, botA)
-<1:3:44>hasint(leg9, topA)
-<1:4:45>topi(topA)
-<1:4:46>topi(topC)
-<1:5:47>lego(leg1)
-<1:5:48>lego(leg2)
-<1:5:49>lego(leg3)
-<1:5:50>lego(leg4)
-<1:5:51>lego(leg5)
-<1:5:52>lego(leg6)
-<1:5:53>lego(leg7)
-<1:5:54>lego(leg8)
-<1:5:55>lego(leg9)
-<1:6:56>level(leg1, 1)
-<1:6:57>level(leg2, 2)
-<1:6:58>level(leg3, 3)
-<1:6:59>level(leg4, 4)
-<1:6:60>level(leg5, 5)
-<1:6:61>level(leg6, 4)
-<1:6:62>level(leg7, 3)
-<1:6:63>level(leg8, 6)
-<1:6:64>level(leg9, 5)
-<1:7:65>link(leg1, topA, leg2, botA)
-<1:7:66>link(leg2, topA, leg3, botA)
-<1:7:67>link(leg3, topA, leg4, botA)
-<1:7:68>link(leg4, topA, leg5, botA)
-<1:7:69>link(leg5, topA, leg8, botC)
-<1:7:70>link(leg6, topA, leg5, botC)
-<1:7:71>link(leg7, topA, leg6, botA)
-<1:7:72>link(leg9, topA, leg8, botA)
-<1:8:73>bottomi(botA)
-<1:8:74>bottomi(botC)
-<1:9:75>subbranch(leg6)
-<1:9:76>subbranch(leg7)
-<1:9:77>subbranch(leg9)
-<1:10:78>interface(botA)
-<1:10:79>interface(botC)
-<1:10:80>interface(topA)
-<1:10:81>interface(topC)
-<1:11:82>base(leg1)
+<model num='1'>
+<1:1:1><literal predicate='connected' atom='connected(leg1, leg2)'>connected(leg1, leg2)</literal>
+<1:1:2><literal predicate='connected' atom='connected(leg2, leg1)'>connected(leg2, leg1)</literal>
+<1:1:3><literal predicate='connected' atom='connected(leg2, leg3)'>connected(leg2, leg3)</literal>
+<1:1:4><literal predicate='connected' atom='connected(leg3, leg2)'>connected(leg3, leg2)</literal>
+<1:1:5><literal predicate='connected' atom='connected(leg3, leg4)'>connected(leg3, leg4)</literal>
+<1:1:6><literal predicate='connected' atom='connected(leg4, leg3)'>connected(leg4, leg3)</literal>
+<1:1:7><literal predicate='connected' atom='connected(leg4, leg5)'>connected(leg4, leg5)</literal>
+<1:1:8><literal predicate='connected' atom='connected(leg5, leg4)'>connected(leg5, leg4)</literal>
+<1:1:9><literal predicate='connected' atom='connected(leg5, leg6)'>connected(leg5, leg6)</literal>
+<1:1:10><literal predicate='connected' atom='connected(leg5, leg8)'>connected(leg5, leg8)</literal>
+<1:1:11><literal predicate='connected' atom='connected(leg6, leg5)'>connected(leg6, leg5)</literal>
+<1:1:12><literal predicate='connected' atom='connected(leg6, leg7)'>connected(leg6, leg7)</literal>
+<1:1:13><literal predicate='connected' atom='connected(leg7, leg6)'>connected(leg7, leg6)</literal>
+<1:1:14><literal predicate='connected' atom='connected(leg8, leg5)'>connected(leg8, leg5)</literal>
+<1:1:15><literal predicate='connected' atom='connected(leg8, leg9)'>connected(leg8, leg9)</literal>
+<1:1:16><literal predicate='connected' atom='connected(leg9, leg8)'>connected(leg9, leg8)</literal>
+<1:2:17><literal predicate='mainbranch' atom='mainbranch(leg1)'>mainbranch(leg1)</literal>
+<1:2:18><literal predicate='mainbranch' atom='mainbranch(leg2)'>mainbranch(leg2)</literal>
+<1:2:19><literal predicate='mainbranch' atom='mainbranch(leg3)'>mainbranch(leg3)</literal>
+<1:2:20><literal predicate='mainbranch' atom='mainbranch(leg4)'>mainbranch(leg4)</literal>
+<1:2:21><literal predicate='mainbranch' atom='mainbranch(leg5)'>mainbranch(leg5)</literal>
+<1:2:22><literal predicate='mainbranch' atom='mainbranch(leg8)'>mainbranch(leg8)</literal>
+<1:3:23><literal predicate='level' atom='level(leg1, 1)'>level(leg1, 1)</literal>
+<1:3:24><literal predicate='level' atom='level(leg2, 2)'>level(leg2, 2)</literal>
+<1:3:25><literal predicate='level' atom='level(leg3, 3)'>level(leg3, 3)</literal>
+<1:3:26><literal predicate='level' atom='level(leg4, 4)'>level(leg4, 4)</literal>
+<1:3:27><literal predicate='level' atom='level(leg5, 5)'>level(leg5, 5)</literal>
+<1:3:28><literal predicate='level' atom='level(leg6, 4)'>level(leg6, 4)</literal>
+<1:3:29><literal predicate='level' atom='level(leg7, 3)'>level(leg7, 3)</literal>
+<1:3:30><literal predicate='level' atom='level(leg8, 6)'>level(leg8, 6)</literal>
+<1:3:31><literal predicate='level' atom='level(leg9, 5)'>level(leg9, 5)</literal>
+<1:4:32><literal predicate='subbranch' atom='subbranch(leg6)'>subbranch(leg6)</literal>
+<1:4:33><literal predicate='subbranch' atom='subbranch(leg7)'>subbranch(leg7)</literal>
+<1:4:34><literal predicate='subbranch' atom='subbranch(leg9)'>subbranch(leg9)</literal>
+<1:5:35><literal predicate='interface' atom='interface(botA)'>interface(botA)</literal>
+<1:5:36><literal predicate='interface' atom='interface(botC)'>interface(botC)</literal>
+<1:5:37><literal predicate='interface' atom='interface(topA)'>interface(topA)</literal>
+<1:5:38><literal predicate='interface' atom='interface(topC)'>interface(topC)</literal>
+</model>
