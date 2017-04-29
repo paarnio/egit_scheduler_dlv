@@ -15,8 +15,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.unical.mat.dlv.program.Atom;
 import it.unical.mat.dlv.program.Conjunction;
 import it.unical.mat.dlv.program.Literal;
+import it.unical.mat.dlv.program.NormalAtom;
 import it.unical.mat.dlv.program.Program;
 import it.unical.mat.dlv.program.Query;
 import it.unical.mat.dlv.program.Rule;
@@ -112,7 +114,11 @@ public class AspDlvReasoner {
 				/* VPA ADDIN:  */
 				invocation.setInputProgram(inputProgram);
 				invocation.setNumberOfModels(numOfModels); //10
-
+				// TESTING QUERY
+				//USING "hasint(leg1,B)" -> ERROR: Non-ground queries are only supported with brave and cautious reasoning.
+				//Atom atom = new NormalAtom(true,"lego(leg1)"); //HAS MODEL: false
+				//invocation.setQuery(new Query(new Conjunction(new Literal(true, atom))));
+				
 				/* MODE 1: TOIMII
 				 * I create a new observer that receive a notification for the models
 				 * computed and store them in a list
