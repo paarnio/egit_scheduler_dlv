@@ -120,7 +120,7 @@ public class AspDlvReasoner {
 				/* VPA ADDIN:  */
 				invocation.setInputProgram(inputProgram);
 				invocation.setNumberOfModels(numOfModels);
-				invocation.setMaxint(20);
+				//invocation.setMaxint(20);
 				// Filters TOIMII
 				List<String> filters=new ArrayList(); 
 				filters.add("subbranch"); 
