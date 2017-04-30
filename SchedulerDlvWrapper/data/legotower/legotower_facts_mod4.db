@@ -36,6 +36,9 @@
 %	botA	botC	topA	topC
 %
 %----------------------------------
+
+#maxint = 40.
+
 % --- Legos ------
 % in main branch
 lego(leg1). lego(leg2). lego(leg3). lego(leg4). lego(leg5).
@@ -43,6 +46,9 @@ lego(leg1). lego(leg2). lego(leg3). lego(leg4). lego(leg5).
 lego(leg6). lego(leg7).
 % new----
 lego(leg8). lego(leg9).
+
+% -- BASE LEGO 
+base(leg1).
 
 %----Interfaces----
 %- NEW: legos can share the interface types (botA, botC, topA, topC)

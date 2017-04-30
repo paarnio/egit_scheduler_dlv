@@ -46,7 +46,7 @@
 % ---- Interface linkions ------
 % in facts.db
 
-#maxint = 15.
+% #maxint = 15. MOVED TO .db file
 
 % --- Connected Legos ------
 %  Legos that have a link between their interfaces are connected
@@ -58,7 +58,8 @@ connected(L2,L1):- connected(L1,L2),lego(L1),lego(L2).
 
 %----- Mainbranch ----------
 % Mainbranch of a legotree. Starting from base lego leg1
-base(leg1).
+% base(leg1). MOVED TO .db file
+
 mainbranch(L) :- base(L), lego(L).
 %--- NEW --- now simplified ( TODO: if correctly linked, also (..topi(I1), bottomi(I2)) could be removed.
 mainbranch(L2) :- mainbranch(L1), lego(L1), lego(L2), link(L1,I1,L2,I2), topi(I1), bottomi(I2).
