@@ -1,0 +1,77 @@
+% legotower_facts_mod5.db 
+% ==============
+% TOIMII
+% 2017-04-28 MODIFYING structure: each lego has interface types (not instances).
+% legotower program divided into two separate files: facts .dlv & rules .db
+% ----- MANUAL --
+% http://www.dlvsystem.com/html/DLV_User_Manual.html
+% -n=<n>        Compute at most <n> stable models (-n=0 and -n=all give all).
+% -N=<N>        Limit integers to [0,<N>].
+% ----- run in powershell ./dlv
+% dlv>./dlv.mingw.exe -silent -filter=mainbranch -filter=subbranch -filter=subbranchinterface -n=1 ./work/legotower_rules_mod4.dlv ./work/legotower_facts_mod5.db
+% ./dlv.mingw.exe -silent -nofacts -N=10 -n=1 ./work/legotower_rules_mod4.txt ./work/legotower_facts_mod5.db
+% pakki #maxint = 2 .
+% pakki #int(X1) .
+% ============ Lego Tree ==============
+% Mainbranch legos 1-8
+% Subbranch legos 6-7, 9-11
+% Base legos 1 and 15
+%
+%			LEGOTREE	LEVEL
+%		    | 8 - 8 |		: 6
+%	 | -11- | 9 | 5 - 5 |	: 5
+%	 |12 | -10- | 4 | 6 |	: 4
+%	 |13 |		| 3 | 7 |	: 3
+%	 |14 |		| 2 |		: 2
+%	 |15 |		| 1 |		: 1
+% 
+% -----------------------------------
+%  In mainbranch: Level defined the order of construction. It can grow only upwards
+%  In subbranch: should be constructed separately also in level order and 
+%  connected to the main branch when ready.
+% ---------------------------------
+%		lego		
+%		/	\		
+%	square	rectangle
+%
+% ----------------------------
+%			INTERFACE TYPE
+%			/			\
+%		bottomi			topi
+%		/	\			/	\
+%	botA	botC	topA	topC
+%
+%----------------------------------
+
+#maxint = 40.
+
+% --- Legos ------
+% in main branch
+square(leg1). square(leg2). square(leg3). square(leg4). 
+rectangle(leg5). rectangle(leg8). 
+% in sub branch
+square(leg6). square(leg7). square(leg9).
+square(leg12). square(leg13). square(leg14). square(leg15).
+rectangle(leg10). rectangle(leg11).
+
+% -- BASE LEGO 
+base(leg1). base(leg15).
+
+%----Interfaces----
+%- NEW: legos can share the interface types (botA, botC, topA, topC)
+
+
+
+% ---- Interface links ------
+%  between interfaces are directed from top to bottom
+%-NEW - Links defined in a new way. Requires Lego identification.
+% link(LEGO1,TOP_INT_TYPE, LEGO2,BOTTOM_INT_TYPE)
+link(leg1,topA,leg2,botA). link(leg2,topA,leg3,botA). link(leg3,topA,leg4,botA).
+link(leg4,topA,leg5,botA). link(leg6,topA,leg5,botC). link(leg7,topA,leg6,botA).
+link(leg5,topA,leg8,botC). link(leg9,topA,leg8,botA).
+% NEW  
+link(leg10,topC,leg9,botA). link(leg10,topA,leg11,botC).
+
+link(leg15,topA,leg14,botA). link(leg14,topA,leg13,botA). link(leg13,topA,leg12,botA). link(leg12,topA,leg11,botA).
+
+% --- END FACTS (RULES in .dlv file) ------
